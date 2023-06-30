@@ -42,8 +42,9 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     aria-labelledby="demo-radio-buttons-group-label"
     name="radio-buttons-group"
   >
-     {answers.map((answer) => (
+     {answers.map((answer,index) => (
      <FormControlLabel
+     key={index} 
            label={answer}
                   control={<Radio />} 
                   value={answer}
@@ -70,6 +71,7 @@ export default function QUESTIONS() {
       try {
         const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
         const data = await response.json();
+        const shuffledData = shuffleQuestions(data);
         setQuestionData(data);
       } catch (error) {
         console.error('Error fetching question data:', error);
@@ -90,6 +92,14 @@ export default function QUESTIONS() {
   if (!questionData) {
     return <p>Loading...</p>;
   }
+  const shuffleQuestions = (questions) => {
+    const shuffledQuestions = [...questions];
+    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+    }
+    return shuffledQuestions;
+  };
 
   const currentQuestion = questionData[currentQuestionIndex];
 
