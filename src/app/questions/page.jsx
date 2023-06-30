@@ -50,6 +50,19 @@ export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+ useEffect(() => {
+    const fetchQuestionData = async () => {
+      try {
+        const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
+        const data = await response.json();
+        setQuestionData(data);
+      } catch (error) {
+        console.error('Error fetching question data:', error);
+      }
+    };
+
+    fetchQuestionData();
+  }, []);
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
