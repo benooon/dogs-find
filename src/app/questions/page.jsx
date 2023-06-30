@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import './page.module.css';
 
 const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
