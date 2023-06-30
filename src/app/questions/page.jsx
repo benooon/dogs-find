@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 
-const QuestionComponent = ({ questionData }) => {
+const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const { subject, question, A, B, C, D } = questionData;
     const [answers, setAnswers] = useState([]);
@@ -28,7 +28,7 @@ const QuestionComponent = ({ questionData }) => {
     };
   
     return (
-      <div>
+        <div className="question-container">
         <h2>{subject}</h2>
         <p>{question}</p>
         <ul>
@@ -46,8 +46,13 @@ const QuestionComponent = ({ questionData }) => {
             </li>
           ))}
         </ul>
-        <button onClick={checkAnswer}>Check Answer</button>
-        {selectedAnswer && <p>{checkAnswer()}</p>}
+        <button className="check-answer-btn" onClick={checkAnswer}>
+        Check Answer
+      </button>
+      {selectedAnswer && <p className="answer-result">{checkAnswer()}</p>}
+      <button className="next-btn" onClick={onNext}>
+        Next
+      </button>
       </div>
     );
   };

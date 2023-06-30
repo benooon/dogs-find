@@ -1,0 +1,31 @@
+.question-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .question-container h2 {
+    margin-top: 0;
+  }
+  
+  .question {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .answers {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .answers li {
+    margin-bottom: 10px;
+  }
+  
+  .check-answer-btn,
+  .next-btn {
+    padding: 10
+  }  
