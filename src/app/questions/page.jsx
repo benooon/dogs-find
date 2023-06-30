@@ -65,7 +65,14 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
 export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
+  const shuffleQuestions = (questions) => {
+    const shuffledQuestions = [...questions];
+    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+    }
+    return shuffledQuestions;
+  };
  useEffect(() => {
     const fetchQuestionData = async () => {
       try {
@@ -92,14 +99,7 @@ export default function QUESTIONS() {
   if (!questionData) {
     return <p>Loading...</p>;
   }
-  const shuffleQuestions = (questions) => {
-    const shuffledQuestions = [...questions];
-    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
-    }
-    return shuffledQuestions;
-  };
+
 
   const currentQuestion = questionData[currentQuestionIndex];
 
