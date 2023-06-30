@@ -1,10 +1,10 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import './page.module.css';
+import './page.css';
 
 const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const { subject, question, A, B, C, D } = questionData;
+    const { subject, qestion, A, B, C, D } = questionData;
     const [answers, setAnswers] = useState([]);
   
     useEffect(() => {
@@ -31,7 +31,7 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     return (
         <div className="question-container">
         <h2>{subject}</h2>
-        <p>{question}</p>
+        <p>{qestion}</p>
         <ul>
           {answers.map((answer) => (
             <li key={answer}>
