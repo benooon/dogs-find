@@ -79,7 +79,7 @@ export default function QUESTIONS() {
         const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
         const data = await response.json();
         const shuffledData = shuffleQuestions(data);
-        setQuestionData(data);
+        setQuestionData(shuffledData);
       } catch (error) {
         console.error('Error fetching question data:', error);
       }
