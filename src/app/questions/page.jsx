@@ -1,72 +1,83 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 
-const QuestionComponent = ({ questionData }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const { subject, question, A, B, C, D } = questionData;
-  const [answers, setAnswers] = useState([]);
-
-  useEffect(() => {
-    // Scramble the answers
-    const scrambledAnswers = [A, B, C, D].sort(() => Math.random() - 0.5);
-    setAnswers(scrambledAnswers);
-
-    return () => {
-        };
-  }, [questionData]);
-
-  const handleAnswerSelection = (answer) => {
-    setSelectedAnswer(answer);
+const QuestionComponent = ({ questionData, onNext }) => {
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const { subject, question, options, correctAnswer } = questionData;
+  
+    const handleAnswerSelection = (answer) => {
+      setSelectedAnswer(answer);
+    };
+  
+    const checkAnswer = () => {
+      if (selectedAnswer === correctAnswer) {
+        return 'Correct!';
+      }
+      return 'Incorrect!';
+    };
+  
+    return (
+      <div>
+        <h2>{subject}</h2>
+        <p>{question}</p>
+        <ul>
+          {options.map((option) => (
+            <li key={option}>
+              <label>
+                <input
+                  type="radio"
+                  name="answer"
+                  value={option}
+                  onChange={() => handleAnswerSelection(option)}
+                />
+                {option}
+              </label>
+            </li>
+          ))}
+        </ul>
+        <button onClick={checkAnswer}>Check Answer</button>
+        {selectedAnswer && <p>{checkAnswer()}</p>}
+        <button onClick={onNext}>Next</button>
+      </div>
+    );
   };
-
-  const checkAnswer = () => {
-    if (selectedAnswer === A) {
-      return 'Correct!';
+  
+  export default function QUESTIONS() {
+    const [questionData, setQuestionData] = useState(null);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  
+    useEffect(() => {
+      const fetchQuestionData = async () => {
+        try {
+          const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
+          const data = await response.json();
+          setQuestionData(data);
+        } catch (error) {
+          console.error('Error fetching question data:', error);
+        }
+      };
+  
+      fetchQuestionData();
+    }, []);
+  
+    const handleNextQuestion = () => {
+      if (currentQuestionIndex < questionData.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        console.log('End of questions');
+      }
+    };
+  
+    if (!questionData) {
+      return <p>Loading...</p>;
     }
-    return 'Incorrect!';
-  };
+  
+    const currentQuestion = questionData[currentQuestionIndex];
+  
+    return (
+      <div>
+        <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} />
+      </div>
+    );
+  }
 
-  return (
-    <div>
-      <h2>{subject}</h2>
-      <p>{question}</p>
-      <ul>
-        {answers.map((answer) => (
-          <li key={answer}>
-            <label>
-              <input
-                type="radio"
-                name="answer"
-                value={answer}
-                onChange={() => handleAnswerSelection(answer)}
-              />
-              {answer}
-            </label>
-          </li>
-        ))}
-      </ul>
-      <button onClick={checkAnswer}>Check Answer</button>
-      {console.log(selectedAnswer)}
-      {selectedAnswer && <p>{checkAnswer()}</p>}
-    </div>
-  );
-};
-
-export default function QESTIONS() {
-  const questionData = [
-    {
-      "subject": "OOAD, מבוא ל-UML וכלי CASE",
-      "question": "מה מהתשובות הבאות הינו יתרון מרכזי של ניתוח ועיצוב מונחה עצמים? OOAD",
-      "A": "שימוש חוזר בשורות של קוד גובר",
-      "B": "מורכבות קוד גוברת",
-      "C": "שגיאות זמן הריצה מוגברות",
-      "D": "הפשטה מוגבלת"
-    }
-  ];
-
-  return (
-    <div>
-      <QuestionComponent questionData={questionData[0]} />
-    </div>
-  );
-}
