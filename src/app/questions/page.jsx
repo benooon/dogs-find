@@ -1,10 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import './page.css';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Typography from '@mui/material/Typography';
 
 const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const { subject, qestion, A, B, C, D } = questionData;
+    const { subject, question, A, B, C, D } = questionData;
     const [answers, setAnswers] = useState([]);
   
     useEffect(() => {
@@ -29,27 +33,26 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     };
   
     return (
-        <div className="question-container">
-        <h2>{subject}</h2>
-        <p>{qestion}</p>
-        <ul>
-          {answers.map((answer) => (
-            <li key={answer}>
-              <label>
-                <input
-                  type="radio"
-                  name="answer"
+        <div className="question-container" dir='rtl'>
+    <Typography variant="h5" gutterBottom>
+    {question}
+      </Typography>
+      <Typography  dir="rtl" variant="subtitle2" gutterBottom> {subject}    </Typography>
+             <RadioGroup
+    aria-labelledby="demo-radio-buttons-group-label"
+    name="radio-buttons-group"
+  >
+     {answers.map((answer) => (
+     <FormControlLabel
+           label={answer}
+                  control={<Radio />} 
                   value={answer}
                   onChange={() => handleAnswerSelection(answer)}
                 />
-                {answer}
-              </label>
-            </li>
+
           ))}
-        </ul>
-        <button className="check-answer-btn" onClick={checkAnswer}>
-        Check Answer
-      </button>
+  </RadioGroup>
+
       {selectedAnswer && <p className="answer-result">{checkAnswer()}</p>}
       <button className="next-btn" onClick={onNext}>
         Next
