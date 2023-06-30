@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const { subject, question, A, B, C, D } = questionData;
+    const { subject, qestion, A, B, C, D } = questionData;
     const [answers, setAnswers] = useState([]);
   
     useEffect(() => {
@@ -35,7 +35,7 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     return (
         <div className="question-container" dir='rtl'>
     <Typography variant="h5" gutterBottom>
-    {question}
+    {qestion}
       </Typography>
       <Typography  dir="rtl" variant="subtitle2" gutterBottom> {subject}    </Typography>
              <RadioGroup
