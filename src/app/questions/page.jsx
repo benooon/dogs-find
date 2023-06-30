@@ -1,50 +1,56 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 
-const QuestionComponent = ({ questionData, onNext }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const { subject, question, options, correctAnswer } = questionData;
-
-  const handleAnswerSelection = (answer) => {
-    setSelectedAnswer(answer);
-  };
-
-  const checkAnswer = () => {
-    if (selectedAnswer === correctAnswer) {
-      return 'Correct!';
-    }
-    return 'Incorrect!';
-  };
-
-  return (
-    <div>
-      <h2>{subject}</h2>
-      <p>{question}</p>
-      {options && options.length > 0 ? (
+const QuestionComponent = ({ questionData }) => {
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const { subject, question, A, B, C, D } = questionData;
+    const [answers, setAnswers] = useState([]);
+  
+    useEffect(() => {
+      // Scramble the answers
+      const scrambledAnswers = [A, B, C, D].sort(() => Math.random() - 0.5);
+      setAnswers(scrambledAnswers);
+  
+      return () => {
+        // Cleanup logic, if needed
+      };
+    }, [questionData]);
+  
+    const handleAnswerSelection = (answer) => {
+      setSelectedAnswer(answer);
+    };
+  
+    const checkAnswer = () => {
+      if (selectedAnswer === A) {
+        return 'Correct!';
+      }
+      return 'Incorrect!';
+    };
+  
+    return (
+      <div>
+        <h2>{subject}</h2>
+        <p>{question}</p>
         <ul>
-          {options.map((option) => (
-            <li key={option}>
+          {answers.map((answer) => (
+            <li key={answer}>
               <label>
                 <input
                   type="radio"
                   name="answer"
-                  value={option}
-                  onChange={() => handleAnswerSelection(option)}
+                  value={answer}
+                  onChange={() => handleAnswerSelection(answer)}
                 />
-                {option}
+                {answer}
               </label>
             </li>
           ))}
         </ul>
-      ) : (
-        <p>No options available</p>
-      )}
-      <button onClick={checkAnswer}>Check Answer</button>
-      {selectedAnswer && <p>{checkAnswer()}</p>}
-      <button onClick={onNext}>Next</button>
-    </div>
-  );
-};
+        <button onClick={checkAnswer}>Check Answer</button>
+        {selectedAnswer && <p>{checkAnswer()}</p>}
+      </div>
+    );
+  };
 
 export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
