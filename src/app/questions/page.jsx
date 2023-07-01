@@ -170,6 +170,8 @@ export default function QUESTIONS() {
       );
     }
     setQuestionData(filteredQuestions);
+    handleNextQuestion();
+    
   }
 
   const currentQuestion = questionData[currentQuestionIndex];
