@@ -1,5 +1,10 @@
+
+import { NextResponse } from 'next/server';
+
 export async function GET(request, { params }) {
-    // we will use params to access the data passed to the dynamic route
-    const user = params.pid;
-    return new Response(`Welcome to my Next application, user: ${user}`);
+  const query = params.pid;
+   const res = db.runQuery(query)
+  console.log(res)
+  return NextResponse.json(res);
+
   }
