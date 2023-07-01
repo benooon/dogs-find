@@ -5,11 +5,44 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from '@mui/material/Typography';
+import CommentForm from '../compoments/CommentForm';
+import CommentList from '../compoments/CommentList';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
+function BasicSelect({filterOptions,handleChange}) {
+  
+    return (
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Age"
+            value="all"
+            onChange={handleChange}
+          >
+      <MenuItem value="all">All</MenuItem>
+          {filterOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
 const QuestionComponent = ({ questionData ,onNext  }) => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const { subject, qestion, A, B, C, D } = questionData;
     const [answers, setAnswers] = useState([]);
+    const [comments, setComments] = useState([]);
+  
   
     useEffect(() => {
       // Scramble the answers
@@ -73,13 +106,37 @@ export default function QUESTIONS() {
     }
     return shuffledQuestions;
   };
- useEffect(() => {
+//  useEffect(() => {
+//     const fetchQuestionData = async () => {
+//       try {
+//         const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
+//         const data = await response.json();
+//         const shuffledData = shuffleQuestions(data);
+//         setQuestionData(shuffledData);
+//       } catch (error) {
+//         console.error('Error fetching question data:', error);
+//       }
+//     };
+
+//     fetchQuestionData();
+//   }, []);
+
+  useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-        const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
-        const data = await response.json();
-        const shuffledData = shuffleQuestions(data);
-        setQuestionData(shuffledData);
+     const questionData = [
+            {
+                "_id": "60f7b1c9e6b6f40015a1a0a1",
+              "subject": "OOAD, מבוא ל-UML וכלי CASE",
+              "qestion": "מה מהתשובות הבאות הינו יתרון מרכזי של ניתוח ועיצוב מונחה עצמים? OOAD",
+              "A": "שימוש חוזר בשורות של קוד גובר",
+              "B": "מורכבות קוד גוברת",
+              "C": "שגיאות זמן הריצה מוגברות",
+              "D": "הפשטה מוגבלת"
+            }
+          ];
+
+        setQuestionData(questionData);
       } catch (error) {
         console.error('Error fetching question data:', error);
       }
@@ -87,6 +144,9 @@ export default function QUESTIONS() {
 
     fetchQuestionData();
   }, []);
+
+
+
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questionData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -99,13 +159,38 @@ export default function QUESTIONS() {
   if (!questionData) {
     return <p>Loading...</p>;
   }
+  const handleChange = (selectedSubject) => {
+    let filteredQuestions;
 
+    if (selectedSubject === 'all') {
+      filteredQuestions = questionData;
+    } else {
+      filteredQuestions = questionData.filter(
+        (question) => question.subject === selectedSubject
+      );
+    }
+    setQuestionData(filteredQuestions);
+  }
 
   const currentQuestion = questionData[currentQuestionIndex];
-
+  function getUniqueSubjects(questionData) {
+    const subjects = questionData.map((qestion) => qestion.subject);
+    const uniqueSubjects = [...new Set(subjects)];
+    return uniqueSubjects;
+  }
+  const uniqueSubjects = getUniqueSubjects(questionData);
   return (
     <div>
-      <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} />
+     <div className='drop-down'> 
+     filer by subject
+         <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} />
+         </div>
+        {/* {console.log(currentQuestion._id)}
+        <CommentForm qestionId={currentQuestion._id} />
+        <CommentList    comments={comments}/> */}
+         <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} />
+
     </div>
+
   );
 }

@@ -41,7 +41,26 @@ const client = new MongoClient(uri, {
     }
   }
 
+  async function insertJsonIntoMongoDB(json) {
+    let client; // Declare the 'client' variable outside the try-catch block
+
+    client = new MongoClient(process.env.MONGO_URL, { useUnifiedTopology: true });
+  
+  
+    try {
+      await client.connect();
+  
+      const database = client.db('yuval-zak'); // Replace with your database name
+      const collection = database.collection('comments'); // Replace with your collection name
+  
+      // Insert the JSON object into the collection
+      const result = await collection.insertOne(json);
+      console.log('Document inserted with _id:', result.insertedId);
+    } finally {
+      await client.close();
+    }
+  }
   module.exports = {
-runQuery
+runQuery,insertJsonIntoMongoDB
   };
   
