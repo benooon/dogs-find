@@ -106,37 +106,13 @@ export default function QUESTIONS() {
     }
     return shuffledQuestions;
   };
-//  useEffect(() => {
-//     const fetchQuestionData = async () => {
-//       try {
-//         const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
-//         const data = await response.json();
-//         const shuffledData = shuffleQuestions(data);
-//         setQuestionData(shuffledData);
-//       } catch (error) {
-//         console.error('Error fetching question data:', error);
-//       }
-//     };
-
-//     fetchQuestionData();
-//   }, []);
-
-  useEffect(() => {
+ useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-     const questionData = [
-            {
-                "_id": "60f7b1c9e6b6f40015a1a0a1",
-              "subject": "OOAD, מבוא ל-UML וכלי CASE",
-              "qestion": "מה מהתשובות הבאות הינו יתרון מרכזי של ניתוח ועיצוב מונחה עצמים? OOAD",
-              "A": "שימוש חוזר בשורות של קוד גובר",
-              "B": "מורכבות קוד גוברת",
-              "C": "שגיאות זמן הריצה מוגברות",
-              "D": "הפשטה מוגבלת"
-            }
-          ];
-
-        setQuestionData(questionData);
+        const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
+        const data = await response.json();
+        const shuffledData = shuffleQuestions(data);
+        setQuestionData(shuffledData);
       } catch (error) {
         console.error('Error fetching question data:', error);
       }
@@ -144,6 +120,30 @@ export default function QUESTIONS() {
 
     fetchQuestionData();
   }, []);
+
+//   useEffect(() => {
+//     const fetchQuestionData = async () => {
+//       try {
+//      const questionData = [
+//             {
+//                 "_id": "60f7b1c9e6b6f40015a1a0a1",
+//               "subject": "OOAD, מבוא ל-UML וכלי CASE",
+//               "qestion": "מה מהתשובות הבאות הינו יתרון מרכזי של ניתוח ועיצוב מונחה עצמים? OOAD",
+//               "A": "שימוש חוזר בשורות של קוד גובר",
+//               "B": "מורכבות קוד גוברת",
+//               "C": "שגיאות זמן הריצה מוגברות",
+//               "D": "הפשטה מוגבלת"
+//             }
+//           ];
+
+//         setQuestionData(questionData);
+//       } catch (error) {
+//         console.error('Error fetching question data:', error);
+//       }
+//     };
+
+//     fetchQuestionData();
+//   }, []);
 
 
 
