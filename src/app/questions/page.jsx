@@ -170,7 +170,7 @@ export default function QUESTIONS() {
       );
     }
     setQuestionData(filteredQuestions);
-    handleNextQuestion();
+    setCurrentQuestionIndex(0);
     
   }
 
