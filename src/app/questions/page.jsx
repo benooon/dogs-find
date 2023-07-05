@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import JSConfetti from 'js-confetti'
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 function BasicSelect({filterOptions,handleChange,value}) {
 
@@ -41,6 +42,7 @@ function BasicSelect({filterOptions,handleChange,value}) {
 
 
 const QuestionComponent = ({ questionData ,onNext  }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const jsConfetti = new JSConfetti()
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [counter, setCounter] = useState(0);
@@ -61,6 +63,10 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     const handleAnswerSelection = (answer) => {
       setSelectedAnswer(answer);
     };
+    const handleClickVariant = (variant) => () => {
+      // variant could be success, error, warning, info, or default
+      enqueueSnackbar('This is a success message!', { variant });
+    };
   
     useEffect(() => {
       if (selectedAnswer === A) {
@@ -71,10 +77,15 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
             emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
          });
         }
-    
-        setResult('Correct!')
+        enqueueSnackbar('תשובה נכונה', {
+          variant: 'success',
+        })
+        //setResult('Correct!')
       } else {
-        setResult('Incorrect!')
+        enqueueSnackbar('תשובה לא נכונה',{
+          variant: 'error',
+        })
+        //setResult('Incorrect!')
         setCounter(0);
       }
     }, [selectedAnswer]);
@@ -83,6 +94,7 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     }
     return (
         <div className="question-container" dir='rtl'>
+            
                 <Typography  dir="rtl" variant="subtitle2" gutterBottom>strike:{counter}  </Typography>
     <Typography variant="h5" gutterBottom>
     {qestion}
@@ -183,15 +195,22 @@ export default function QUESTIONS() {
 
 
   return (
+    <SnackbarProvider  anchorOrigin={ {horizontal: 'left', vertical: 'bottom'} } iconVariant={{
+      success: '✅',
+      error: '✖️',
+      warning: '⚠️',
+      info: 'ℹ️',
+    }}
+  >
     <div>
      <div className='drop-down'> 
-
+           <Typography  dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
          </div>
 
          <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion}    /> 
 
     </div>
-
+    </SnackbarProvider>
   );
 }
