@@ -13,7 +13,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import JSConfetti from 'js-confetti'
-
+import { Metadata } from 'next'
+ 
+export const metadata = {
+  title: 'הכנה למבחן עיצוב מערכות',
+  description: 'הכנה למבחן עיצוב מערכות'
+}
 function BasicSelect({filterOptions,handleChange,value}) {
 
     return (
