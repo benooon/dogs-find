@@ -14,8 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import JSConfetti from 'js-confetti'
 import { SnackbarProvider, useSnackbar } from 'notistack';
-
-
+import Button from '@mui/material/Button';
 
 function BasicSelect({filterOptions,handleChange,value}) {
 
@@ -65,11 +64,7 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
     const handleAnswerSelection = (answer) => {
       setSelectedAnswer(answer);
     };
-    const handleClickVariant = (variant) => () => {
-      // variant could be success, error, warning, info, or default
-      enqueueSnackbar('This is a success message!', { variant });
-    };
-  
+
     useEffect(() => {
       if (selectedAnswer === A) {
         setCounter(counter + 1);
@@ -95,8 +90,9 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
       return null;
     }
     return (
+
         <div className="question-container" dir='rtl'>
-            
+
                 <Typography  dir="rtl" variant="subtitle2" gutterBottom>strike:{counter}  </Typography>
     <Typography variant="h5" gutterBottom>
     {qestion}
@@ -117,13 +113,8 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
 
           ))}
   </RadioGroup>
-  {/* {selectedAnswer && <p className="answer-result">{checkAnswer()}</p>} */}
-
       {selectedAnswer && <p className="answer-result">{result}</p>}
-      <button className="next-btn" onClick={onNext}>
-        Next
-      </button>
-
+      <Button variant="contained" className="next-btn" onClick={onNext}>Next</Button>
       </div>
 
         
@@ -210,7 +201,9 @@ export default function QUESTIONS() {
     <div>
      <div className='drop-down'> 
            <Typography  dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
+           <div>
          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
+         </div>
          </div>
 
          <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion}    /> 
