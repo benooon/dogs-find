@@ -4,7 +4,7 @@ import { TabContext } from '@mui/lab';
 import TabList from '@mui/lab/TabList';
 import React, { useState, useEffect } from 'react';
 
-export default function LabTabs({ changestae ,counter}) {
+export default function LabTabs({ changestae ,counter,label1}) {
     const [value, setValue] = React.useState('1');
   
     const handleChange = (event, newValue) => {
@@ -18,7 +18,7 @@ export default function LabTabs({ changestae ,counter}) {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="כל השאלות" value="1" onClick={changestae} />
-              <Tab label={`${counter} שאלות שטעיתי`} value="2" onClick={changestae} />
+              <Tab label={`${counter} שאלות שטעיתי`} value="2" onClick={changestae} disabled={label1}/>
             </TabList>
           </Box>
   

@@ -123,8 +123,8 @@ export default function QUESTIONS() {
 
   const currentQuestion = questionData[currentQuestionIndex];
   const currentQuestionSecond = secondArray[secondArrayIndex];
+  
   const uniqueSubjects = [...new Set(dataOriginal.map((question) => question.subject))];
-
 
   return (
     <SnackbarProvider anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} iconVariant={{
@@ -141,7 +141,7 @@ export default function QUESTIONS() {
           <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
 
         </div>
-        <LabTabs changestae={habdleIssecond} counter={secondArray.length} />
+        <LabTabs changestae={habdleIssecond} counter={secondArray.length}  label1={secondArray.length === 0}  />
 
         {isSecond ? (
           <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd} />
