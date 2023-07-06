@@ -19,6 +19,8 @@ import Tab from '@mui/material/Tab';
 import { TabContext } from '@mui/lab';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function LabTabs({ changestae ,counter}) {
   const [value, setValue] = React.useState('1');
@@ -104,16 +106,17 @@ const QuestionComponent = ({ questionData ,onNext,addSecond  }) => {
           variant: 'success',
         })
         //setResult('Correct!')
-      } else {
-        enqueueSnackbar('תשובה לא נכונה',{
-          variant: 'error',
-        })
-        //setResult('Incorrect!')
+      } else if (selectedAnswer !== null) {
+        setResult('Incorrect!');
         console.log(questionData);
         setCounter(0);
         addSecond(questionData);
+        enqueueSnackbar('תשובה לא נכונה', {
+          variant: 'error',
+        });
       }
     }, [selectedAnswer]);
+
     if (!questionData) {
       return null;
     }
@@ -229,7 +232,7 @@ setIsSecond(!isSecond);
       console.log('End of questions');
     }
   } else {
-    if (secondArrayIndex < secondArray.length - 2) {
+    if (secondArrayIndex < secondArray.length - 1) {
       setSecondArrayIndex(secondArrayIndex + 1);
     } else {
   
@@ -248,7 +251,15 @@ setIsSecond(!isSecond);
     setFilterSubject(selectedSubject);
   };
   if (!questionData) {
-    return <p>Loading...</p>;
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+    );
   }
 
   const currentQuestion = questionData[currentQuestionIndex];
@@ -271,7 +282,7 @@ setIsSecond(!isSecond);
          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
 
          </div>
-     <LabTabs changestae={habdleIssecond} counter={secondArray.length-1}/>
+     <LabTabs changestae={habdleIssecond} counter={secondArray.length}/>
 
          {isSecond ? (
   <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd}/>
