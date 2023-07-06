@@ -1,7 +1,6 @@
 import './globals.css'
 import NavBar from './NavBar'
 import { Inter } from 'next/font/google'
-import ReactGA from 'react-ga';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -10,7 +9,6 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-ReactGA.initialize('G-TK3VW8QD0H');
 
   return (
 <html lang='en' >
