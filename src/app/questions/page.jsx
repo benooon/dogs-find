@@ -109,9 +109,9 @@ const QuestionComponent = ({ questionData ,onNext,addSecond  }) => {
           variant: 'error',
         })
         //setResult('Incorrect!')
+        console.log(questionData);
         setCounter(0);
         addSecond(questionData);
-        console.log('secondArray)');
       }
     }, [selectedAnswer]);
     if (!questionData) {
@@ -157,7 +157,6 @@ export default function QUESTIONS() {
   const [isSecond, setIsSecond] = useState(false);
   const [secondArray, setSecondArray] = useState([]);
   const [secondArrayIndex, setSecondArrayIndex] = useState(0);
-  const jsConfetti = new JSConfetti()
 
   const shuffleQuestions = (questions) => {
     const shuffledQuestions = [...questions];
@@ -169,15 +168,21 @@ export default function QUESTIONS() {
 
 };
 const addObjectToEnd = (object) => {
-  const isObjectAlreadyPresent = secondArray.some((item) =>
-    JSON.stringify(item) === JSON.stringify(object)
-  );
+  let isObjectAlreadyPresent = false;
+console.log(secondArray);
+  if (secondArray.length > 0) {
+    isObjectAlreadyPresent = secondArray.some((item) =>
+      JSON.stringify(item) === JSON.stringify(object)
+    );
+  }
+
   console.log(isObjectAlreadyPresent);
 
   if (!isObjectAlreadyPresent) {
     setSecondArray(prevArray => [...prevArray, object]);
     console.log(secondArray);
-  }  };
+  }
+};
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
@@ -208,11 +213,11 @@ const addObjectToEnd = (object) => {
   }, [filterSubject]);
 
 
-
   const habdleIssecond = () => {
 setIsSecond(!isSecond);
   };
   const handleNextQuestion = () => {
+    const jsConfetti = new JSConfetti()
     if (!isSecond) {
     if (currentQuestionIndex < questionData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
