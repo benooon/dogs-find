@@ -123,7 +123,10 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
       <button className="next-btn" onClick={onNext}>
         Next
       </button>
+
       </div>
+
+        
     );
   };
 
@@ -146,7 +149,7 @@ export default function QUESTIONS() {
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-        const response = await fetch('https://dogs-find-production.up.railway.app//api/qestions');
+        const response = await fetch('http://localhost:3000/api/qestions');
         const data = await response.json();
         const shuffledData = shuffleQuestions(data);
         setDataOriginal(shuffledData);
