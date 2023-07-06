@@ -140,7 +140,7 @@ export default function QUESTIONS() {
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-        const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
+        const response = await fetch('http://localhost:3000/api/qestions');
         const data = await response.json();
         const shuffledData = shuffleQuestions(data);
         setDataOriginal(shuffledData);
@@ -200,6 +200,8 @@ export default function QUESTIONS() {
   >
     <div>
      <div className='drop-down'> 
+     <Typography  dir="rtl" variant="subtitle2" gutterBottom>TEST ENV  </Typography>
+
            <Typography  dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
            <div>
          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
