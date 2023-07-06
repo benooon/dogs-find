@@ -15,6 +15,8 @@ import Select from '@mui/material/Select';
 import JSConfetti from 'js-confetti'
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
+
+
 function BasicSelect({filterOptions,handleChange,value}) {
 
     return (
@@ -195,7 +197,7 @@ export default function QUESTIONS() {
 
 
   return (
-    <SnackbarProvider  anchorOrigin={ {horizontal: 'left', vertical: 'bottom'} } iconVariant={{
+    <SnackbarProvider  anchorOrigin={{horizontal: 'center', vertical: 'bottom'} } iconVariant={{
       success: '✅',
       error: '✖️',
       warning: '⚠️',
