@@ -18,6 +18,12 @@ export default function QUESTIONS() {
   const [isSecond, setIsSecond] = useState(false);
   const [secondArray, setSecondArray] = useState([]);
   const [secondArrayIndex, setSecondArrayIndex] = useState(0);
+  const [value, setValue] = React.useState('1');
+  
+  const handleChangeTab = (event, newValue) => {
+    setValue(newValue);
+    habdleIssecond();
+  };
 
   const shuffleQuestions = (questions) => {
     const shuffledQuestions = [...questions];
@@ -98,7 +104,10 @@ export default function QUESTIONS() {
         jsConfetti.addConfetti({
           emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
         });
-        ;
+        setSecondArrayIndex(0);
+        setSecondArray([])
+        setIsSecond(false);
+        handleChangeTab(null, '1');
         console.log('End of questions');
       }
 
@@ -141,7 +150,7 @@ export default function QUESTIONS() {
           <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
 
         </div>
-        <LabTabs changestae={habdleIssecond} counter={secondArray.length}  label1={secondArray.length === 0}  />
+        <LabTabs changestae={habdleIssecond} counter={secondArray.length}  label1={secondArray.length === 0} handleChangeTab={handleChangeTab} value={value}/>
 
         {isSecond ? (
           <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd} />
