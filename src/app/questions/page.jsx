@@ -15,7 +15,33 @@ import Select from '@mui/material/Select';
 import JSConfetti from 'js-confetti'
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import Button from '@mui/material/Button';
+import Tab from '@mui/material/Tab';
+import { TabContext } from '@mui/lab';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
+function LabTabs({ changestae ,counter}) {
+  const [value, setValue] = React.useState('1');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    changestae();
+  };
+
+  return (
+<Box sx={{ width: '100%', typography: 'body1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="כל השאלות" value="1" onClick={changestae} />
+            <Tab label={`${counter} שאלות שטעיתי`} value="2" onClick={changestae} />
+          </TabList>
+        </Box>
+
+      </TabContext>
+    </Box>
+  );
+}
 function BasicSelect({filterOptions,handleChange,value}) {
 
     return (
@@ -42,7 +68,7 @@ function BasicSelect({filterOptions,handleChange,value}) {
   }
 
 
-const QuestionComponent = ({ questionData ,onNext  }) => {
+const QuestionComponent = ({ questionData ,onNext,addSecond  }) => {
   const { enqueueSnackbar } = useSnackbar();
   const jsConfetti = new JSConfetti()
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -84,6 +110,8 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
         })
         //setResult('Incorrect!')
         setCounter(0);
+        addSecond(questionData);
+        console.log('secondArray)');
       }
     }, [selectedAnswer]);
     if (!questionData) {
@@ -124,8 +152,12 @@ const QuestionComponent = ({ questionData ,onNext  }) => {
 export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
   const [dataOriginal, setDataOriginal] = useState(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [filterSubject, setFilterSubject] = useState('all');
+  const [isSecond, setIsSecond] = useState(false);
+  const [secondArray, setSecondArray] = useState([]);
+  const [secondArrayIndex, setSecondArrayIndex] = useState(0);
+  const jsConfetti = new JSConfetti()
 
   const shuffleQuestions = (questions) => {
     const shuffledQuestions = [...questions];
@@ -136,11 +168,20 @@ export default function QUESTIONS() {
     return shuffledQuestions;
 
 };
+const addObjectToEnd = (object) => {
+  const isObjectAlreadyPresent = secondArray.some((item) =>
+    JSON.stringify(item) === JSON.stringify(object)
+  );
+  console.log(isObjectAlreadyPresent);
 
+  if (!isObjectAlreadyPresent) {
+    setSecondArray(prevArray => [...prevArray, object]);
+    console.log(secondArray);
+  }  };
   useEffect(() => {
     const fetchQuestionData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/qestions');
+        const response = await fetch('https://dogs-find-production.up.railway.app/api/qestions');
         const data = await response.json();
         const shuffledData = shuffleQuestions(data);
         setDataOriginal(shuffledData);
@@ -168,16 +209,35 @@ export default function QUESTIONS() {
 
 
 
-
+  const habdleIssecond = () => {
+setIsSecond(!isSecond);
+  };
   const handleNextQuestion = () => {
+    if (!isSecond) {
     if (currentQuestionIndex < questionData.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
+      jsConfetti.addConfetti({
+        emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+     });
       alert('End of questions')
       console.log('End of questions');
     }
-  };
-
+  } else {
+    if (secondArrayIndex < secondArray.length - 2) {
+      setSecondArrayIndex(secondArrayIndex + 1);
+    } else {
+  
+      alert('End of questions')
+      jsConfetti.addConfetti({
+        emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+     });
+;
+      console.log('End of questions');
+    }
+    
+  }};
+  
   const handleChange = (event) => {
     const selectedSubject = event.target.value;
     setFilterSubject(selectedSubject);
@@ -187,6 +247,7 @@ export default function QUESTIONS() {
   }
 
   const currentQuestion = questionData[currentQuestionIndex];
+  const currentQuestionSecond = secondArray[secondArrayIndex];
   const uniqueSubjects = [...new Set(dataOriginal.map((question) => question.subject))];
 
 
@@ -200,16 +261,18 @@ export default function QUESTIONS() {
   >
     <div>
      <div className='drop-down'> 
-     <Typography  dir="rtl" variant="subtitle2" gutterBottom>TEST ENV  </Typography>
-
            <Typography  dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
-           <div>
+
          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
-         </div>
-         </div>
 
-         <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion}    /> 
+         </div>
+     <LabTabs changestae={habdleIssecond} counter={secondArray.length-1}/>
 
+         {isSecond ? (
+  <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd}/>
+) : (
+  <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} addSecond={addObjectToEnd} />
+)}
     </div>
     </SnackbarProvider>
   );
