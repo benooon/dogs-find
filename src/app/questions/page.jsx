@@ -9,7 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LabTabs from '../compoments/LabTabs';
 import BasicSelect from '../compoments/BasicSelect';
 import QuestionComponent from '../compoments/QuestionComponent';
-import AlertDialogSlide from '../compoments/dialog';
+import AlertDialogSlide from '../compoments/Dialog';
 
 export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
