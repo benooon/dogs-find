@@ -7,7 +7,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 
-export default function QuestionComponent({ questionData, onNext, addSecond }) {
+export default function QuestionComponent({ questionData, onNext, addSecond,onBack,isFirst }) {
     const { enqueueSnackbar } = useSnackbar();
     const jsConfetti = new JSConfetti()
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -82,6 +82,8 @@ export default function QuestionComponent({ questionData, onNext, addSecond }) {
             </RadioGroup>
             {selectedAnswer && <p className="answer-result">{result}</p>}
             <Button variant="contained" className="next-btn" onClick={onNext}>Next</Button>
+            <Button variant="contained" className="next-btn" onClick={onBack} disabled={isFirst}>back</Button>
+
         </div>
 
 

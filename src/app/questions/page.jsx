@@ -118,52 +118,65 @@ export default function QUESTIONS() {
 
     }
   };
+  const handleBackQuestion = () => {
+    const jsConfetti = new JSConfetti()
+    if (!isSecond) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
 
-  const handleChange = (event) => {
-    const selectedSubject = event.target.value;
-    setFilterSubject(selectedSubject);
-  };
-  if (!questionData) {
-    return (
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={true}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+    } else {
+      setSecondArrayIndex(secondArrayIndex - 1);
 
-    );
+
+    }
+
   }
 
-  const currentQuestion = questionData[currentQuestionIndex];
-  const currentQuestionSecond = secondArray[secondArrayIndex];
-  
-  const uniqueSubjects = [...new Set(dataOriginal.map((question) => question.subject))];
 
+const handleChange = (event) => {
+  const selectedSubject = event.target.value;
+  setFilterSubject(selectedSubject);
+};
+if (!questionData) {
   return (
-    <SnackbarProvider anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} iconVariant={{
-      success: '✅',
-      error: '✖️',
-      warning: '⚠️',
-      info: 'ℹ️',
-    }}
+    <Backdrop
+      sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={true}
     >
-      <div>
-        <AlertDialogSlide open={open} handleClose={handleClosePopUp} content='😥נגמר השאלות'/>
-        <div className='drop-down'>
-          <Typography dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
+      <CircularProgress color="inherit" />
+    </Backdrop>
 
-          <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
-
-        </div>
-        <LabTabs changestae={habdleIssecond} counter={secondArray.length}  label1={secondArray.length === 0} handleChangeTab={handleChangeTab} value={value}/>
-
-        {isSecond ? (
-          <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd} />
-        ) : (
-          <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} addSecond={addObjectToEnd} />
-        )}
-      </div>
-    </SnackbarProvider>
   );
+}
+
+const currentQuestion = questionData[currentQuestionIndex];
+const currentQuestionSecond = secondArray[secondArrayIndex];
+
+const uniqueSubjects = [...new Set(dataOriginal.map((question) => question.subject))];
+
+return (
+  <SnackbarProvider anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }} iconVariant={{
+    success: '✅',
+    error: '✖️',
+    warning: '⚠️',
+    info: 'ℹ️',
+  }}
+  >
+    <div>
+      <AlertDialogSlide open={open} handleClose={handleClosePopUp} content='😥נגמר השאלות' />
+      <div className='drop-down'>
+        <Typography dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
+
+        <BasicSelect filterOptions={uniqueSubjects} handleChange={handleChange} value={filterSubject} />
+
+      </div>
+      <LabTabs changestae={habdleIssecond} counter={secondArray.length} label1={secondArray.length === 0} handleChangeTab={handleChangeTab} value={value} />
+
+      {isSecond ? (
+        <QuestionComponent questionData={currentQuestionSecond} onNext={handleNextQuestion} addSecond={addObjectToEnd} onBack={ handleBackQuestion} isFirst={secondArrayIndex===0}/>
+      ) : (
+        <QuestionComponent questionData={currentQuestion} onNext={handleNextQuestion} addSecond={addObjectToEnd} onBack={ handleBackQuestion}  isFirst={currentQuestionIndex===0}/>
+      )}
+    </div>
+  </SnackbarProvider>
+);
 }
