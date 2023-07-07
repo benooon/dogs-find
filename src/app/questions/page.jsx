@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LabTabs from '../compoments/LabTabs';
 import BasicSelect from '../compoments/BasicSelect';
 import QuestionComponent from '../compoments/QuestionComponent';
+import AlertDialogSlide from '../compoments/dialog';
 
 export default function QUESTIONS() {
   const [questionData, setQuestionData] = useState(null);
@@ -19,7 +20,11 @@ export default function QUESTIONS() {
   const [secondArray, setSecondArray] = useState([]);
   const [secondArrayIndex, setSecondArrayIndex] = useState(0);
   const [value, setValue] = React.useState('1');
-  
+  const [open, setOpen] = React.useState(false);
+
+  const handleClosePopUp = () => {
+    setOpen(false);
+  };
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
     habdleIssecond();
@@ -92,7 +97,7 @@ export default function QUESTIONS() {
         jsConfetti.addConfetti({
           emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
         });
-        alert('End of questions')
+        setOpen(true);
         console.log('End of questions');
       }
     } else {
@@ -100,7 +105,7 @@ export default function QUESTIONS() {
         setSecondArrayIndex(secondArrayIndex + 1);
       } else {
 
-        alert('End of questions')
+        setOpen(true);
         jsConfetti.addConfetti({
           emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
         });
@@ -144,6 +149,7 @@ export default function QUESTIONS() {
     }}
     >
       <div>
+        <AlertDialogSlide open={open} handleClose={handleClosePopUp} content='😥נגמר השאלות'/>
         <div className='drop-down'>
           <Typography dir="rtl" variant="subtitle2" gutterBottom>{currentQuestionIndex}/{questionData.length}  </Typography>
 

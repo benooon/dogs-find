@@ -44,7 +44,6 @@ export default function QuestionComponent({ questionData, onNext, addSecond }) {
             })
             //setResult('Correct!')
         } else if (selectedAnswer !== null) {
-            setResult('Incorrect!');
             console.log(questionData);
             setCounter(0);
             addSecond(questionData);
